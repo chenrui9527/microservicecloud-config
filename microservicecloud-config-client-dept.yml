@@ -54,3 +54,55 @@ info:
   company.name: www.bokesoft.com
   build.artifactId: $project.artifactId$
   build.version: $project.version$
+
+---
+server:
+  port: 8001
+  
+mybatis:
+  config-location: classpath:mybatis/mybatis.cfg.xml        # mybatis配置文件所在路径
+  type-aliases-package: com.bokesoft.springcloud.entities    # 所有Entity别名类所在包
+  mapper-locations:
+  - classpath:mybatis/mapper/**/*.xml                       # mapper映射文件
+    
+spring:
+   profiles: dev
+   application:
+    name: microservicecloud-dept
+   datasource:
+    url: jdbc:mysql://localhost:3306/cloudDB02              # 数据库名称
+    type: com.alibaba.druid.pool.DruidDataSource            # 当前数据源操作类型
+    driver-class-name: com.mysql.jdbc.Driver                # mysql驱动包
+    username: root
+    password: root
+    
+    #上半区公共部分对应的是 org.springframework.boot.autoconfigure.jdbc.DataSourceProperties 中的属性
+ 
+    #下半区属性对应的是 com.alibaba.druid.pool.DruidDataSource 中的属性，Spring Boot 默认是不注入不了这些属性值的，需要自己绑定
+    #druid 数据源专有配置
+    
+    initialSize: 5
+    minIdle: 5
+    maxActive: 20
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    validationQuery: SELECT 1 FROM DUAL
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+    poolPreparedStatements: true
+    
+eureka: 
+  client: 
+    service-url: 
+      defaultZone: http://localhost:7001/eureka
+  instance: 
+    instance-id: microservicecloud-dept8001
+    prefer-ip-address: true
+    
+info: 
+  app.name: bokesoft-microservicecloud
+  company.name: www.bokesoft.com
+  build.artifactId: $project.artifactId$
+  build.version: $project.version$
